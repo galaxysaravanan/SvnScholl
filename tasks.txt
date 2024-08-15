@@ -1,0 +1,26 @@
+
+  1 | RJ01N2909727144 |
+ 40 | RJ11N740722831  |
+ 41 | RJ24N357534886  |
+----+-----------------+-----
+
+new_voter_id 60 10 50
+
+name_correction 60 20 to superadmin  40 to admin
+fathername_correction 5 to admin
+gender_correction 5  to admin
+dob_correction 5  to admin
+address_correction 5  to admin
+aadhar_details_correction 5  to admin
+mobile_correction 5  to admin
+photo_correction 5  to admin
+
+digital_voterid 30 5 to superadmin 25 to admin
+
+RJ11N740722831 admin user
+
+RJ27N909585223 center user
+
+RJ24N357534886
+
+

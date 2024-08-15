@@ -1,0 +1,16 @@
+{
+    "name": "Adline HSC",
+    "short_name": "Adline HSC",
+    "start_url": "/welcome",
+    "background_color": "#6777ef",
+    "description": "Adline HSC",
+    "display": "fullscreen",
+    "theme_color": "#6777ef",
+    "icons": [
+        {
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ]
+}
