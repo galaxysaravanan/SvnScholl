@@ -57,8 +57,6 @@ class TimetableController extends Controller
     $class_id = "";
     $school_id = auth()->user()->school_id;
     $sql = "select a.id,a.class_name,a.division_id,b.division_name from class_list a,division_list b where a.division_id=b.id and a.school_id=$school_id order by a.id,b.id";
-    // echo $sql;die;
-
     $class = DB::select(DB::raw($sql));
     $timetable = array();
     // echo'<pre>';print_r( $timetable );echo'</pre>';die;

@@ -36,7 +36,20 @@
                         onclick="showregister()" role="tab" aria-controls="pills-signup"
                         aria-selected="false">Registeration</a> </li>
             </ul>
-
+            @if (session()->has('success'))
+            <div class="alert alert-success alert-dismissable" style="margin: 15px;">
+                <a href="#" style="color:white !important" class="close" data-dismiss="alert"
+                    aria-label="close">&times;</a>
+                <strong> {{ session('success') }} </strong>
+            </div>
+        @endif
+        @if (session()->has('error'))
+            <div class="alert alert-danger alert-dismissable" style="margin: 15px;">
+                <a href="#" style="color:white !important" class="close" data-dismiss="alert"
+                    aria-label="close">&times;</a>
+                <strong> {{ session('error') }} </strong>
+            </div>
+        @endif
             <div style="display: none;" class="tab-pane" id="pills-signup" role="tabpanel"
                 aria-labelledby="pills-signup-tab">
                 <div class="col-sm-12 border-primary shadow rounded pt-2">
@@ -44,7 +57,7 @@
                         <p class="login-box-msg">Registeration</p>
                         <p class="text-center text-danger">{{ session('message') }} </p>
                         <form method="post" action="{{ url('/saveregister') }}">
-                            @csrf
+                            {{ csrf_field() }}
                             <div class="input-group mb-3">
                                 <input type="text" name="name" placeholder="Name" class="form-control">
                                 <div class="input-group-append">
@@ -53,14 +66,16 @@
                                 </div>
                             </div>
                             <div class="input-group mb-3">
-                                <input type="text" name="email" placeholder="Email" class="form-control">
+                                <input type="text" name="email" onkeyup="duplicateemail(0)" id="email" placeholder="Email" class="form-control">
+                                <span id="dupemail" style="color:red"></span>
                                 <div class="input-group-append">
                                     <div class="input-group-text"><span class="fas fa-envelope"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="input-group mb-3">
-                                <input type="text" maxlength="10" name="phone" placeholder="Phone" class="form-control number">
+                                <input type="text" onkeyup="duplicatephone(0)" id="phone" maxlength="10" name="phone" placeholder="Phone" class="form-control number">
+                                <span id="dupmobile" style="color:red"></span>
                                 <div class="input-group-append">
                                     <div class="input-group-text"><span class="fas fa-envelope"></span>
                                     </div>
@@ -75,7 +90,7 @@
                                 </div>
                             </div>
                             <div class="input-group mb-3">
-                                <input name="plain_password" id="showpas" type="password" maxlength="20" class="form-control">
+                                <input name="password" id="showpas" type="password" maxlength="20" class="form-control">
                                 <div class="input-group-append">
                                     <div class="input-group-text">
                                         <span class="fas fa-lock"></span>

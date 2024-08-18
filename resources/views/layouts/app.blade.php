@@ -317,6 +317,51 @@
             });
         });
 
+        function duplicatephone(){
+    var phone = $("#phone").val().trim();
+    var url = "{{ url('checkphone') }}";
+    url=url+"/"+phone;
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function(res) {
+            if(res.exists){
+                $("#save").prop('disabled', true);
+                $("#dupmobile").html("Duplicate mobile number");
+            }else{
+                $("#save").prop('disabled', false);
+                $("#dupmobile").html("");
+            }
+        },
+
+        error: function (jqXHR, exception) {
+            console.log(exception);
+        }
+    });
+}
+
+function duplicateemail(){
+      var email = $("#email").val().trim();
+      var url = "{{ url('checkemail') }}";
+      url=url+"/"+email;
+      $.ajax({
+         type: "GET",
+         url: url,
+         success: function(res) {
+            if(res.exists){
+               $("#save").prop('disabled', true);
+               $("#dupemail").html("Duplicate email");
+           }else{
+               $("#save").prop('disabled', false);
+               $("#dupemail").html("");
+           }
+       },
+
+       error: function (jqXHR, exception) {
+        console.log(exception);
+    }
+});
+  }
     </script>
 </body>
 
