@@ -33,7 +33,7 @@ $permission = DB::table('users')
                         <label>Dashboard</label>
                     </a>
                 </li>
-            
+
                 <li class="nav-item d-none d-sm-inline-block col-md-1">
                     <div class="dropdown">
                         <img src="{{ URL::to('/') }}/dist/img/icon/user.png" style="width:50px"></br>
@@ -51,22 +51,6 @@ $permission = DB::table('users')
                             <a href="{{ url('/viewtimetable') }}">ViewTime Table</a>
                         </div>
                     </div>
-                </li>
-
-                <li class="nav-item d-none d-sm-inline-block col-md-1">
-                    <div class="dropdown">
-
-                        <img src="{!! asset('dist/img/icon/setting.png') !!}" style="width:50px"></br>
-                        <a href="">
-                            <a class="dropbtn">
-                                <label>Setting</label></a>
-                            <div class="dropdown-content">
-                                @if (Auth::user()->user_type_id == 1 || Auth::user()->user_type_id == 2 || Auth::user()->user_type_id == 3)
-                                    <a href="{{ url('/districts') }}">Districts</a>
-                                @endif
-                            </div>
-                    </div>
-                    </a>
                 </li>
 
                 <li class="nav-item d-none d-sm-inline-block col-md-1">
