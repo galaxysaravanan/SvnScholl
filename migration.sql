@@ -1,4 +1,7 @@
 ALTER TABLE `users` ADD `profile` varchar(50) NULL DEFAULT NULL AFTER `panfile`;
+ALTER TABLE `users` ADD `name` varchar(50) NULL DEFAULT NULL AFTER `full_name`;
+ALTER TABLE `users` ADD `school_id` int(11) NULL DEFAULT NULL AFTER `name`;
+ALTER TABLE `timetable` ADD `period_time` varchar(20) NULL DEFAULT NULL;
 
 
 ALTER TABLE `students` ADD `caste` varchar(10) NULL DEFAULT NULL AFTER `phone`;

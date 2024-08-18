@@ -11,11 +11,11 @@ class DashboardController extends Controller {
     }
 
     public function dashboard() {
-        $sql=" select count(id) as Customers from customers";
+        $sql=" select count(id) as Students from students";
         $result = DB::select( DB::raw( $sql ) );
         if ( count( $result ) > 0 ) {
 
-            $Customers = $result[ 0 ]->Customers;
+            $Students = $result[ 0 ]->Students;
 
         }
         $sql=" select count(id) as Users from users";
@@ -36,17 +36,10 @@ class DashboardController extends Controller {
             $accounttype[$i]["account_type_id"] = $account_type_id;
             $accounttype[$i]["account_type_name"] = $account_type_name;
             $accounttype[$i]["accountcount"]  = 0;
-            if($i%2 == 0)
-                $accounttype[$i]["color"]  = "bg-olive";
-            else
-            $accounttype[$i]["color"]  = "bg-indigo";
-            $sql2 = "select count(*) as accountcount from customers where account_type_id = $account_type_id";
-            $result2 = DB::select($sql2);
-            $accounttype[$i]["accountcount"] = $result2[0]->accountcount;
-            $i++;
+
         }
 
-        return view( 'dashboard',compact('Customers','Users','accounttype','accountcount'));
+        return view( 'dashboard',compact('Students','Users'));
     }
 
     public function bgdark( $user_id ) {

@@ -26,7 +26,7 @@
                 <span class="info-box-icon"><i class="fas fa-user-friends"></i></span>
                 <div class="info-box-content">
                     <span class="info-box-text">Students</span>
-                    <span class="info-box-number">{{ $Customers }}</span>
+                    <span class="info-box-number">{{ $Students }}</span>
                     <div class="progress">
                         <div class="progress-bar" style="width: 70%"></div>
                     </div>
@@ -110,28 +110,6 @@
             </div>
         </div>
 
- <!--   <div class="row">
-        @foreach ($accounttype as $key => $taskstyps)
-            <div class="col-12 col-sm-6 col-md-3">
-                <div class="info-box">
-                    <span class="info-box-icon {{ $taskstyps['color'] }} elevation-1"><i class="fas fa-heart"></i></span>
-                    <div class="info-box-content">
-                        <span class="info-box-text">{{ $taskstyps['account_type_name'] }}</span>
-                        <span class="info-box-number">
-                            {{ $taskstyps['accountcount'] }}
-
-                            <small><a onclick="accounttype('{{ $taskstyps['account_type_id'] }}')"
-                                    class="small-box-footer float-sm-right"><i class="fas fa-arrow-circle-right"></i></a>
-
-                            </small>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    </div>
-
--->
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
             <div class="modal-content">

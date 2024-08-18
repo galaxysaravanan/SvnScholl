@@ -151,4 +151,8 @@ class StudentsController extends Controller {
         return redirect( '/students' )->with( 'success', 'Students Updated Successfully' );
     }
 
+    public function timetable() {
+
+        return view( 'students/timetable');
+    }
 }

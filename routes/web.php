@@ -15,7 +15,18 @@ Route::post('/savestudents', [App\Http\Controllers\StudentsController::class, 's
 Route::post('/updatestudents', [App\Http\Controllers\StudentsController::class, 'updatestudents'])->name('updatestudents');
 Route::get('/deletestudent/{id}', [App\Http\Controllers\UsersController::class, 'deletestudent'])->name('deletestudent');
 Route::get('/useraccount/{id}', [App\Http\Controllers\StudentsController::class, 'useraccount'])->name('useraccount');
-Route::get('/statement', [App\Http\Controllers\StudentsController::class, 'statement'])->name('statement');
+
+ROUTE::post('/getsubject', [App\Http\Controllers\TimetableController::class, 'getsubject'])->name('getsubject');
+ROUTE::post('/getstaff', [App\Http\Controllers\TimetableController::class, 'getstaff'])->name('getstaff');
+Route::get('/timetable', [App\Http\Controllers\TimetableController::class, 'index'])->name('timetable');
+Route::post('/savetimetable', [App\Http\Controllers\TimetableController::class, 'savetimetable'])->name('savetimetable');
+ROUTE::post('/savetimetable2', [App\Http\Controllers\TimetableController::class, 'savetimetable2'])->name('savetimetable2');
+ROUTE::post('/savetimetable3', [App\Http\Controllers\TimetableController::class, 'savetimetable3'])->name('savetimetable3');
+Route::get('/deletetimetable/{id}', [App\Http\Controllers\TimetableController::class, 'deletetimetable'])->name('deletetimetable');
+ROUTE::get('/viewtimetable', [App\Http\Controllers\TimetableController::class, 'viewtimetable'])->name('viewtimetable');
+ROUTE::get('/stafftimetable', [App\Http\Controllers\TimetableController::class, 'stafftimetable'])->name('stafftimetable');
+ROUTE::get('/showtimetable/{class_id}/{division_id}', [App\Http\Controllers\TimetableController::class, 'showtimetable'])->name('showtimetable');
+
 
 
 Route::get('/staf', [App\Http\Controllers\UsersController::class, 'users'])->name('users');
