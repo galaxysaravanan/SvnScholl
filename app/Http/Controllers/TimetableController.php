@@ -14,22 +14,6 @@ class TimetableController extends Controller
     $this->middleware('auth');
   }
 
-  private function check_access($BP){
-    if($BP == "man_timetable" && Auth::user()->man_timetable == 0){
-      echo "<h1>Access Denied</h1>";
-      die;
-    }elseif($BP == "add_timetable" && Auth::user()->add_timetable == 0){
-      echo "<h1>Access Denied</h1>";
-      die;
-    }elseif($BP == "vew_timetable" && Auth::user()->vew_timetable == 0){
-      echo "<h1>Access Denied</h1>";
-      die;
-    }elseif($BP == "del_timetable" && Auth::user()->del_timetable == 0){
-      echo "<h1>Access Denied</h1>";
-      die;
-    }
-  }
-
   public function index()
   {
     $school_id = auth()->user()->school_id;
@@ -59,53 +43,10 @@ class TimetableController extends Controller
     $sql = "select a.id,a.class_name,a.division_id,b.division_name from class_list a,division_list b where a.division_id=b.id and a.school_id=$school_id order by a.id,b.id";
     $class = DB::select(DB::raw($sql));
     $timetable = array();
+    $sql = "select * from subject order by subject_name";
+    $subject = DB::select(DB::raw($sql));
     // echo'<pre>';print_r( $timetable );echo'</pre>';die;
-    return view('students/viewtimetable',compact('class','class_id','timetable'));
-  }
-
-  public function stafftimetable(){
-    $school_id = auth()->user()->school_id;
-    $staff_id = auth()->user()->id;
-    if(auth()->user()->usertype_id == 3){
-      $sql = "select * from period order by period_name";
-      $period = DB::select(DB::raw($sql));
-      $weekday = array();
-      $weekday[1] = "Monday";
-      $weekday[2] = "Tuesday";
-      $weekday[3] = "Wednesday";
-      $weekday[4] = "Thursday";
-      $weekday[5] = "Friday";
-      $weekday[6] = "Saturday";
-      $timetable = array();
-      for($i=1;$i<7;$i++){
-        $day = $weekday[$i];
-        $timetable[$i]["weekday"] = $day;
-        $timetable[$i]["weekday_id"] = $i;
-        $j=0;
-        foreach($period as $p){
-          $period_id = $p->id;
-          $timetable[$i]["data"][$j]["period_id"] = $p->id;
-          $timetable[$i]["data"][$j]["period_name"] = $p->period_name;
-          $timetable[$i]["data"][$j]["start_time"] = $p->start_time;
-          $timetable[$i]["data"][$j]["end_time"] = $p->end_time;
-          $timetable[$i]["data"][$j]["subject"] = "";
-          $timetable[$i]["data"][$j]["class_name"] = "";
-          $timetable[$i]["data"][$j]["division_name"] = "";
-          $timetable[$i]["data"][$j]["class_id"] = 0;
-          $sql = "select a.*,b.subject_name,c.class_name,d.division_name from timetable a,subject b,class_list c,division_list d where a.subject_id=b.id and a.class_id=c.id and a.division_id=d.id and a.school_id=$school_id and a.staff_id=$staff_id and a.weekday=$i and period_id=$period_id";
-          $result = DB::select(DB::raw($sql));
-          foreach($result as $res){
-            $timetable[$i]["data"][$j]["subject"] = $res->subject_name;
-            $timetable[$i]["data"][$j]["class_name"] = $timetable[$i]["data"][$j]["class_name"]. " " .$res->class_name.$res->division_name;
-            $timetable[$i]["data"][$j]["division_name"] = "";
-            $timetable[$i]["data"][$j]["class_id"] = $res->class_id;
-          }
-          $j++;
-        }
-      }
-    }
-    #echo "<pre>";print_r($timetable);echo "</pre>";die;
-    return view('timetable/stafftimetable',compact('period','weekday','timetable'));
+    return view('students/viewtimetable',compact('class','class_id','timetable','subject'));
   }
 
   public function showtimetable($class_id,$division_id){
@@ -155,21 +96,6 @@ class TimetableController extends Controller
     return view('students/viewtimetable',compact('class','period','class_id','timetable','subject','staff','class_name'));
   }
 
-
-  public function getstaff(Request $request){
-    $school_id = auth()->user()->school_id;
-    $weekday = $request->weekday;
-    $period_id = $request->period;
-    $sql = "select id,name from users where user_type_id=3 and school_id=$school_id and id not in (select staff_id from timetable where period_id=$period_id and weekday=$weekday and school_id=$school_id) order by name";
-    $staff = DB::select(DB::raw($sql));
-    return response()->json($staff);
-  }
-
-  public function getsubject(Request $request){
-    $getsubject = DB::table('subject')->where('class_id',$request->class_id)->orderBy('subject_name','Asc')->get();
-    return response()->json($getsubject);
-  }
-
   public function savetimetable3(Request $request){
     $school_id = auth()->user()->school_id;
     $class_id = $request->class_id3;
@@ -199,8 +125,7 @@ class TimetableController extends Controller
     $period_id = $request->period_id;
     $subject_id = $request->subject_id;
     $staff_id = $request->staff_id;
-    $period_time = $request->period_time;
-    $sql = "insert into timetable (school_id,class_id,division_id,weekday,period_id,subject_id,staff_id,period_time) values ($school_id,$class_id,$division_id,$weekday,$period_id,$subject_id,$staff_id,$period_time)";
+    $sql = "insert into timetable (school_id,class_id,division_id,weekday,period_id,subject_id,staff_id) values ($school_id,$class_id,$division_id,$weekday,$period_id,$subject_id,$staff_id)";
     DB::insert(DB::raw($sql));
     return redirect("/showtimetable/".$class_id."/".$division_id)->with('success', 'Timetable Added Successfully');
   }
@@ -226,11 +151,25 @@ class TimetableController extends Controller
   }
 
   public function deletetimetable($id){
-    $this->check_access("del_timetable");
     $school_id = auth()->user()->school_id;
     $sql = "delete from timetable where school_id=$school_id and id=$id";
     DB::insert(DB::raw($sql));
     return redirect('/timetable')->with('success', 'Timetable Deleted Successfully');
   }
+
+  public function updatesub(Request $request){
+    $editsubject = DB::table('subject')->where('id',$request->sub_id)->update([
+        'subject_name'    =>   $request->class_id,
+    ]);
+    return redirect()->back()->with('success', 'Subject Updated Successfully');
+}
+
+public function updateperiod(Request $request){
+    $editsubject = DB::table('period')->where('id',$request->time_id)->update([
+        'start_time'  =>   $request->start_time,
+        'end_time'    =>   $request->end_time,
+    ]);
+    return redirect()->back()->with('success', 'Time Updated Successfully');
+}
 
 }

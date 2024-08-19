@@ -37,7 +37,12 @@
 								<tr>
 									<th class="btn-success">Class: {{ $class_name }}</th>
 									@foreach($period as $p)
-									<th>{{ $p->period_name }}</th>
+									<th>{{ $p->period_name }}.<i style="color: red">{{ $p->start_time }}</i>.<i>{{ $p->end_time }}</i>
+                                        {{-- <td width="10" style="white-space: nowrap"> --}}
+                                            <a onclick="edit_time('{{ $p->id }}','{{ $p->start_time }}','{{ $p->end_time }}')"
+                                                  class=""><i class="fa fa-edit"> </i></a>
+                                          {{-- </td> --}}
+                                    </th>
 									@endforeach
 								</tr>
 							</thead>
@@ -54,10 +59,15 @@
 									@php($period_id = $v["period_id"])
 									@if($v['staff'] == "" && $weekday_id != 6)
 									<td align="center">
-										<a onclick="add_timetable('{{ $class_id }}','{{ $weekday_id }}','{{ $period_id }}')" class="btn btn-primary btn-sm pu"><i class="fa fa-plus"> </i> Add</a>
+										<a onclick="add_timetable('{{ $class_id }}','{{ $weekday_id }}','{{ $period_id }}')" class="btn btn-success btn-sm pu"><i class="fa fa-plus"> </i></a>
 									</td>
-									@else
-									<td title="{{ $v['staff'] }}">{{ $v["subject"] }}</td>
+                                    @else
+									{{-- @elseif($v['subject'] != "") --}}
+									<td title="{{ $v['staff'] }}">{{ $v["subject"] }}
+                                        {{-- @foreach($subject as $s) --}}
+                                        {{-- <a onclick="edit_timetable('{{ $class_id }}')" class="btn btn-primary btn-sm pu"><i class="fa fa-edit"> </i></a> --}}
+                                        {{-- @endforeach --}}
+                                    </td>
 									@endif
 									@endforeach
 								</tr>
@@ -81,7 +91,7 @@
 									<div class="modal-body">
 										<div class="row">
 											<div class="col-md-12">
-												<input type="hidden" name="class_id2" id="class_id2">
+												<input type="hidden" name="class_id2" id="class_id">
 												<input type="hidden" name="division_id" id="division_id">
 												<input type="hidden" name="weekday" id="weekday">
 												<input type="hidden" name="period_id" id="period_id">
@@ -111,12 +121,6 @@
 														</select>
 													</div>
 												</div>
-												<div class="form-group row">
-													<label for="period_time" class="col-sm-4 col-form-label"><span style="color:red">*</span>Time</label>
-													<div class="col-sm-8">
-														<input type="time" name="period_time" class="form-control" placeholder="Time"/>
-													</div>
-												</div>
 											</div>
 										</div>
 										<div class="modal-footer justify-content-between">
@@ -136,6 +140,85 @@
 	</div>
 
 
+    <div class="modal fade" id="edittimetable" tabindex="-1"  aria-hidden="true">
+        <form action="{{url('/updatesub')}}" method="post">
+            {{ csrf_field() }}
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalScrollable">Edit Timetable</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input type="hidden" name="sub_id" id="sub_id">
+                                <div class="form-group row">
+                                    <label for="subject_name" class="col-sm-4 col-form-label"><span style="color:red">*</span>Subject</label>
+                                    <div class="col-sm-8">
+                                        <input required="required" name="subject_name" id="editsubject" class="form-control" placeholder="Subject Name">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            <input class="btn btn-primary" type="submit" value="Submit" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="modal fade" id="edittime">
+    <form action="{{ url('/updateperiod') }}" method="post">
+        {{ csrf_field() }}
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Update Time</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="hidden" name="time_id" id="tim_id">
+                            <div class="form-group row">
+                                <label for="start_time" class="col-sm-4 col-form-label"><span
+                                        style="color:red">*</span>Start Time</label>
+                                <div class="col-sm-8">
+                                    <input name="start_time" type="text" class="form-control"
+                                        id="editstart" placeholder="Start Time" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="end_time" class="col-sm-4 col-form-label"><span
+                                        style="color:red">*</span>End Time</label>
+                                <div class="col-sm-8">
+                                    <input name="end_time" type="text" class="form-control"
+                                        id="editendd" placeholder="End Time" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <input class="btn btn-primary" type="submit" value="Submit" />
+            </div>
+        </div>
+      </div>
+     </form>
+</div>
 
 	<div class="modal fade" id="sattimetable" tabindex="-1"  aria-hidden="true">
 		<form action="{{url('/savetimetable3')}}" method="post">
@@ -215,6 +298,18 @@
 				$("#period_id").val(period_id);
 				$("#addtimetable").modal("show");
 			}
+
+			function edit_timetable(id,class_id){
+				$("#sub_id").val(id);
+				$("#edittimetable").modal("show");
+			}
+
+            function edit_time(id, start_time, end_time) {
+            $("#tim_id").val(id);
+            $("#editstart").val(start_time);
+            $("#editendd").val(end_time);
+            $("#edittime").modal("show");
+        }
 
 		</script>
 		@endpush

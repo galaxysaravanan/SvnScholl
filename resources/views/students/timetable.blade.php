@@ -17,6 +17,12 @@
             <strong> {{ session('success') }} </strong>
           </div>
           @endif
+          @if(session()->has('error'))
+          <div class="alert alert-error alert-dismissable" style="margin: 15px;">
+            <a href="#" style="color:white !important" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong> {{ session('error') }} </strong>
+          </div>
+          @endif
           <div class="table-responsive">
             <table id="example2" class="table table-bordered">
               <thead>

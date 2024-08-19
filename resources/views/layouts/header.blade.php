@@ -33,7 +33,15 @@ $permission = DB::table('users')
                         <label>Dashboard</label>
                     </a>
                 </li>
-
+                <li class="nav-item d-none d-sm-inline-block col-md-1">
+                    <div class="dropdown">
+                        <img src="{{ URL::to('/') }}/dist/img/icon/user.png" style="width:50px"></br>
+                        <a class="dropbtn"><label>Subject</label></a>
+                        <div class="dropdown-content">
+                            <a href="{{ url('/subject') }}">Add Subject</a>
+                        </div>
+                    </div>
+                </li>
                 <li class="nav-item d-none d-sm-inline-block col-md-1">
                     <div class="dropdown">
                         <img src="{{ URL::to('/') }}/dist/img/icon/user.png" style="width:50px"></br>
@@ -59,11 +67,6 @@ $permission = DB::table('users')
                         <img src="{!! asset('dist/img/icon/logout.png') !!}" style="width:50px"></br>
                         <a class="dropbtn"><label>{{ Auth::user()->full_name }}</label></a>
                         <div class="dropdown-content">
-                            <a href="{{ url('/profile') }}"> My Profile</a>
-                            @if (Auth::user()->user_type_id == 1 || Auth::user()->user_type_id == 2 || Auth::user()->user_type_id == 3)
-                                <a href="">Backup</a>
-                            @endif
-                            <a href="{{ url('/changepassword') }}">Change Password</a>
                             <a href="{{ url('/logout') }}">Log Out</a>
                         </div>
                     </div>
