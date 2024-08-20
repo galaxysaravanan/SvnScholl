@@ -21,6 +21,8 @@ ROUTE::get('/stafftimetable', [App\Http\Controllers\TimetableController::class, 
 ROUTE::get('/showtimetable/{class_id}/{division_id}', [App\Http\Controllers\TimetableController::class, 'showtimetable'])->name('showtimetable');
 ROUTE::post('/updatesub', [App\Http\Controllers\TimetableController::class, 'updatesub'])->name('updatesub');
 Route::post('/updateperiod', [App\Http\Controllers\TimetableController::class, 'updateperiod'])->name('updateperiod');
+ROUTE::post('/getsubject', [App\Http\Controllers\TimetableController::class, 'getsubject'])->name('getsubject');
+ROUTE::post('/getstaff', [App\Http\Controllers\TimetableController::class, 'getstaff'])->name('getstaff');
 
 Route::post('/saveregister', [App\Http\Controllers\RegisterController::class, 'saveregister'])->name('saveregister');
 Route::get('/checkphone/{phone}', [App\Http\Controllers\RegisterController::class, 'checkphone'])->name('checkphone');

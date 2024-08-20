@@ -13,7 +13,7 @@
 			</div>
 			<div class="card card-primary">
 				<div class="card-header">
-					<h3 class="card-title">Time Table</h3>
+					<h3 class="card-title">ShowTime Table</h3>
 					<div class="row float-right ">
 						<div>
 							<select required="required" name="class_id" class="form-control select2" id="class_id">
@@ -38,10 +38,8 @@
 									<th class="btn-success">Class: {{ $class_name }}</th>
 									@foreach($period as $p)
 									<th>{{ $p->period_name }}.<i style="color: red">{{ $p->start_time }}</i>.<i>{{ $p->end_time }}</i>
-                                        {{-- <td width="10" style="white-space: nowrap"> --}}
                                             <a onclick="edit_time('{{ $p->id }}','{{ $p->start_time }}','{{ $p->end_time }}')"
                                                   class=""><i class="fa fa-edit"> </i></a>
-                                          {{-- </td> --}}
                                     </th>
 									@endforeach
 								</tr>
@@ -62,12 +60,7 @@
 										<a onclick="add_timetable('{{ $class_id }}','{{ $weekday_id }}','{{ $period_id }}')" class="btn btn-success btn-sm pu"><i class="fa fa-plus"> </i></a>
 									</td>
                                     @else
-									{{-- @elseif($v['subject'] != "") --}}
-									<td title="{{ $v['staff'] }}">{{ $v["subject"] }}
-                                        {{-- @foreach($subject as $s) --}}
-                                        {{-- <a onclick="edit_timetable('{{ $class_id }}')" class="btn btn-primary btn-sm pu"><i class="fa fa-edit"> </i></a> --}}
-                                        {{-- @endforeach --}}
-                                    </td>
+									<td title="{{ $v['staff'] }}">{{ $v["subject"] }}~{{ $v["staff"] }}</td>
 									@endif
 									@endforeach
 								</tr>
@@ -138,44 +131,6 @@
 			</div>
 		</div>
 	</div>
-
-
-    <div class="modal fade" id="edittimetable" tabindex="-1"  aria-hidden="true">
-        <form action="{{url('/updatesub')}}" method="post">
-            {{ csrf_field() }}
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalScrollable">Edit Timetable</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <input type="hidden" name="sub_id" id="sub_id">
-                                <div class="form-group row">
-                                    <label for="subject_name" class="col-sm-4 col-form-label"><span style="color:red">*</span>Subject</label>
-                                    <div class="col-sm-8">
-                                        <input required="required" name="subject_name" id="editsubject" class="form-control" placeholder="Subject Name">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <input class="btn btn-primary" type="submit" value="Submit" />
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-</div>
-</div>
-</div>
 
 <div class="modal fade" id="edittime">
     <form action="{{ url('/updateperiod') }}" method="post">

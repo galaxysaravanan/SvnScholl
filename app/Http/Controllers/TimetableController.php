@@ -29,10 +29,16 @@ class TimetableController extends Controller
     $sql = "select * from period order by period_name";
     $period = DB::select(DB::raw($sql));
 
+    $sql = "select * from subject order by subject_name";
+    $subject = DB::select(DB::raw($sql));
+
+    $sql = "select * from users order by name";
+    $users = DB::select(DB::raw($sql));
+
     $sql = "select a.*,b.class_name,c.division_name,d.subject_name,e.period_name,e.start_time,e.end_time,f.name from timetable a,class_list b,division_list c,subject d,period e,users f where a.staff_id=f.id and a.period_id=e.id and a.subject_id=d.id and a.class_id=b.id and a.division_id=c.id and a.school_id order by class_id,division_id,weekday,period_id";
     $timetable = DB::select(DB::raw($sql));
     // echo'<pre>';print_r( $timetable );echo'</pre>';die;
-    return view('students/timetable',compact('class','period','weekday','timetable'));
+    return view('students/timetable',compact('class','period','weekday','timetable','subject','users'));
   }
 
 
@@ -158,8 +164,10 @@ class TimetableController extends Controller
   }
 
   public function updatesub(Request $request){
-    $editsubject = DB::table('subject')->where('id',$request->sub_id)->update([
-        'subject_name'    =>   $request->class_id,
+    // dd($request->all());die;
+    $editsubject = DB::table('timetable')->where('id',$request->sub_id)->update([
+        'subject_id'  =>   $request->subject_id,
+        'staff_id'    =>   $request->staff_id,
     ]);
     return redirect()->back()->with('success', 'Subject Updated Successfully');
 }
@@ -171,5 +179,20 @@ public function updateperiod(Request $request){
     ]);
     return redirect()->back()->with('success', 'Time Updated Successfully');
 }
+
+public function getstaff(Request $request){
+    $school_id = auth()->user()->school_id;
+    $weekday = $request->weekday;
+    $period_id = $request->period;
+    $sql = "select id,name from users where usertype_id=3 and school_id=$school_id and id not in (select staff_id from timetable where period_id=$period_id and weekday=$weekday and school_id=$school_id) order by name";
+    $staff = DB::select(DB::raw($sql));
+    return response()->json($staff);
+  }
+
+  public function getsubject(Request $request){
+    $getsubject = DB::table('subject')->where('class_id',$request->class_id)->orderBy('subject_name','Asc')->get();
+    return response()->json($getsubject);
+  }
+
 
 }
